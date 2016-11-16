@@ -4,6 +4,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fetch = require('node-fetch');
+var cors = require('cors');
 
 require('dotenv').load();
 
@@ -19,6 +20,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.user(cors());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
