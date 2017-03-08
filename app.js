@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
     res.status(500);
     res.json({
       status: 'Error',
-      message: 'Missing text parameters'
+      message: 'Missing text parameter'
     });
   } else {
     const APIURL = `https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19&text=${text}`;
