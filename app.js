@@ -26,7 +26,7 @@ app.use(cors());
 app.get('/', (req, res) => {
   const {version, text} = req.query;
 
-  if(!version && !text) {
+  if(!text) {
     res.status(500);
     res.json({
       status: 'Error',
