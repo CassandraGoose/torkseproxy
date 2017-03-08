@@ -24,7 +24,7 @@ app.use(cors());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  const {version, text} = req.query;
+  const {text} = req.query;
 
   if(!text) {
     res.status(500);
