@@ -33,13 +33,13 @@ app.get('/', (req, res) => {
       message: 'Missing version and text parameters'
     });
   } else {
-    // const APIURL = `https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=${version}&text=${text}`;
+    const APIURL = `https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19&text=${text}`;
 
-    fetch(process.env.AUTH_CODE, {
-      method: 'GET'
-      // headers: {
-      //   Authorization: `Basic ${process.env.AUTH_CODE}`
-      // }
+    fetch(APIURL, {
+      method: 'GET',
+      headers: {
+        Authorization: `Basic ${process.env.AUTH_CODE}`
+      }
     }).then(response => {
       return response.json();
     }).then(json => {
