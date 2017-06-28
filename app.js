@@ -1,3 +1,5 @@
+//these are all the dependancies and things I am using in my express app (server)
+//these need to be npm-installed
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
@@ -5,36 +7,40 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fetch = require('node-fetch');
 var cors = require('cors');
-
+//the line below is saying 'we're going to use information from the .env file later'
+//it should be installed using npm install -S dotenv
+//and then create a .env file to put your authorizaiton stuff in.
 require('dotenv').load();
 
+//then we need to make an instance of express. this is saying 'when i use the word 'app', we are using express'
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//the stuff below is us actually using some of the dependancies from above.
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
-// app.use(express.static(path.join(__dirname, 'public')));
 
+
+//the stuff below is the main part
+//this is our 'route', which the front end will make a get request to and then this will make a get request to the watson tone analyzer.
 app.get('/', (req, res) => {
+  //set variable to the input from the user.
   const {text} = req.query;
-
+//if there isn't any text, send an error.
   if(!text) {
     res.status(500);
     res.json({
       status: 'Error',
       message: 'Missing text parameter'
     });
+    //if there is text, do this stuff:
   } else {
+    //set a variable for the url to api that has the text attached to it.
     const APIURL = `https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19&text=${text}`;
 
+//using 'fetch', we make a get request to that api url and send authorization headers. these headers refer to the .env that keeps our auth code safe.
     fetch(APIURL, {
       method: 'GET',
       headers: {
@@ -45,8 +51,7 @@ app.get('/', (req, res) => {
     }).then(json => {
       res.json(json);
     }).catch(error => {
-      res.status(500);
-      res.json({
+      res.status(500).json({
         status: 'Error',
         error
       });
@@ -54,6 +59,7 @@ app.get('/', (req, res) => {
   }
 });
 
+//the stuff below just comes with the express generator, but it is still important. feel free to copy and paste this and learn about it more in q2
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
